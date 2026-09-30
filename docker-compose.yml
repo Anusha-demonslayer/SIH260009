@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://manganex:manganex_secure_pass@postgres:5432/manganex_db
+      - REDIS_URL=redis://redis:6379/0
+      - JWT_SECRET=manganex_production_jwt_secret_key_2026
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgis/postgis:15-3.3
+    environment:
+      - POSTGRES_USER=manganex
+      - POSTGRES_PASSWORD=manganex_secure_pass
+      - POSTGRES_DB=manganex_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+volumes:
+  pgdata:

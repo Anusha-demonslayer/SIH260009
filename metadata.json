@@ -1,0 +1,6 @@
+{
+  "name": "Manganex AI - Manganese Exploration & Production Intelligence",
+  "description": "AI-powered manganese mineral prospectivity mapping, reserve intelligence, production shortfall forecasting, and operational simulation for MOIL Limited (SIH26009).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
